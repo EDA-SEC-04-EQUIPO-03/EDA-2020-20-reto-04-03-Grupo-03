@@ -60,7 +60,7 @@ try:
                                               size=14000,
                                               comparefunction=compareStopIds)
         return analyzer
-    except Exception as exp:
+except Exception as exp:
         error.reraise(exp, 'model:Analizador')
 
 # Funciones para agregar informacion al grafo
