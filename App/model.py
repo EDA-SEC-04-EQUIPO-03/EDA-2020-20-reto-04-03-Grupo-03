@@ -53,17 +53,45 @@ def Analizador():
 
         analyzer['trips'] = m.newMap(numelements=14000,
                                      maptype='PROBING',
-                                     comparefunction=compare)
+                                     comparefunction=compareStations)
 
         analyzer['connections'] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=True,
                                               size=14000,
-                                              comparefunction=compare)
+                                              comparefunction=compareStations)
         return analyzer
  except Exception as exp:
         error.reraise(exp, 'model:Analizador')
 
 # Funciones para agregar informacion al grafo
+
+def AddViaje(analyzer,trip):
+
+    origin = trip['start station id']
+    destination = trip['end station id']
+    duration = int(trip['tripduration'])
+    addStation(analyzer, origin)
+    addStation(analyzer, destination)
+    addConnection(analyzer, origin, destination, duration)
+
+def addStation(analyzer, stationid):
+    """
+    Adiciona una estación como un vertice del grafo
+    """
+    if not gr.containsVertex(analyzer ["connections"], stationid):
+            gr.insertVertex(analyzer ["connections"], stationid)
+    return analyzer
+
+def addConnection(analyzer, origin, destination, duration):
+    """
+    Adiciona un arco entre dos estaciones
+    """
+    edge = gr.getEdge(analyzer ["connections"], origin, destination)
+    if edge is None:
+        gr.addEdge(analyzer["connections"], origin, destination, duration)
+    return analyzer
+
+
 
 # ==============================
 # Funciones de consulta

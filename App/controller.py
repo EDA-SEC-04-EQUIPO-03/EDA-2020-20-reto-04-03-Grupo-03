@@ -53,6 +53,23 @@ def init():
 #  de datos en los modelos
 # ___________________________________________________
 
+def loadTrips(analyzer):
+    for filename in os.listdir(cf.data_dir):
+        if filename.endswith('.csv'):
+            print('Cargando archivo: ' + filename)
+            loadFile(analyzer, filename)
+    return analyzer
+ 
+def loadData(analyzer, archivo):
+    archivo = cf.data_dir + archivo
+    input_file = csv.DictReader(open(archivo, encoding="utf-8"),
+                                delimiter=",")
+    for trip in input_file:
+        model.addTrip(analyzer, trip)
+    return analyzer
+
+
+
 # ___________________________________________________
 #  Funciones para consultas
 # ___________________________________________________
