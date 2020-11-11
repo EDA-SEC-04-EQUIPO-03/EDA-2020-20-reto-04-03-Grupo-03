@@ -52,7 +52,7 @@ def init():
 #  Funciones para la carga de datos y almacenamiento
 #  de datos en los modelos
 # ___________________________________________________
-
+ 
 def loadTrips(analyzer):
     for filename in os.listdir(cf.data_dir):
         if filename.endswith('.csv'):
