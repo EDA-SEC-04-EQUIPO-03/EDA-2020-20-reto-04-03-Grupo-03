@@ -66,7 +66,7 @@ def Analizador():
 # Funciones para agregar informacion al grafo
 
 def AddViaje(analyzer,trip):
-
+    #Cada estación se agrega como un vértice al grafo, si es que aún no existe.
     origin = trip['start station id']
     destination = trip['end station id']
     duration = int(trip['tripduration'])
