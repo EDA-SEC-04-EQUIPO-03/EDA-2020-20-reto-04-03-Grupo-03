@@ -43,24 +43,24 @@ de creacion y consulta sobre las estructuras de datos.
 # -----------------------------------------------------
 
 def Analizador():
-try:
+ try:
         analyzer = {
-                    'stops': None,
+                    'trips': None,
                     'connections': None,
                     'components': None,
-                    'paths': None
+                    'routes': None
                     }
 
-        analyzer['stops'] = m.newMap(numelements=14000,
+        analyzer['trips'] = m.newMap(numelements=14000,
                                      maptype='PROBING',
-                                     comparefunction=compareStopIds)
+                                     comparefunction=compare)
 
         analyzer['connections'] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=True,
                                               size=14000,
-                                              comparefunction=compareStopIds)
+                                              comparefunction=compare)
         return analyzer
-except Exception as exp:
+ except Exception as exp:
         error.reraise(exp, 'model:Analizador')
 
 # Funciones para agregar informacion al grafo
