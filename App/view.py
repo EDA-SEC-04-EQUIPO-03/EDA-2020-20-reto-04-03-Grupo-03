@@ -43,7 +43,7 @@ operación seleccionada.
 #  Variables
 # ___________________________________________________
 
-servicefile = 'bus_routes_1000.csv'
+servicefile = '201801-1-citibike-tripdata.csv'
 initialStation = None
 recursionLimit = 20000
 # ___________________________________________________
@@ -67,9 +67,9 @@ def printMenu():
 
 def CargarInfo():
     print("\nCargando información de transporte de singapur ....")
-    controller.loadServices(cont, servicefile)
+    controller.loadData(cont, servicefile)
     numedges = controller.totalConnections(cont)
-    numvertex = controller.totalStops(cont)
+    numvertex = controller.totalVertex(cont)
     print('Numero de vertices: ' + str(numvertex))
     print('Numero de arcos: ' + str(numedges))
     print('El limite de recursion actual: ' + str(sys.getrecursionlimit()))

@@ -66,7 +66,7 @@ def Analizador():
 # Funciones para agregar informacion al grafo
 
 def AddViaje(analyzer,trip):
-
+    #Cada estación se agrega como un vértice al grafo, si es que aún no existe.
     origin = trip['start station id']
     destination = trip['end station id']
     duration = int(trip['tripduration'])
@@ -113,7 +113,7 @@ def minimumCostPaths(analyzer, initialStation):
     Calcula los caminos de costo mínimo desde la estacion initialStation
     a todos los demas vertices del grafo
     """
-    analyzer['paths'] = djk.Dijkstra(analyzer['connections'], initialStation)
+    analyzer['routes'] = djk.Dijkstra(analyzer['connections'], initialStation)
     return analyzer
 
 
@@ -122,7 +122,7 @@ def hasPath(analyzer, destStation):
     Indica si existe un camino desde la estacion inicial a la estación destino
     Se debe ejecutar primero la funcion minimumCostPaths
     """
-    return djk.hasPathTo(analyzer['paths'], destStation)
+    return djk.hasPathTo(analyzer['routes'], destStation)
 
 
 def minimumCostPath(analyzer, destStation):
@@ -131,11 +131,11 @@ def minimumCostPath(analyzer, destStation):
     y la estacion destino
     Se debe ejecutar primero la funcion minimumCostPaths
     """
-    path = djk.pathTo(analyzer['paths'], destStation)
+    path = djk.pathTo(analyzer['routes'], destStation)
     return path
 
 
-def totalStops(analyzer):
+def totalVertex(analyzer):
     """
     Retorna el total de estaciones (vertices) del grafo
     """
@@ -198,14 +198,14 @@ def formatVertex(service):
 # Funciones de Comparacion
 # ==============================
 
-def compareStopIds(stop, keyvaluestop):
+def compareStations(stat, keyvalue):
     """
     Compara dos estaciones
     """
-    stopcode = keyvaluestop['key']
-    if (stop == stopcode):
+    code = keyvalue['key']
+    if (stat == code):
         return 0
-    elif (stop > stopcode):
+    elif (stat > code):
         return 1
     else:
         return -1
