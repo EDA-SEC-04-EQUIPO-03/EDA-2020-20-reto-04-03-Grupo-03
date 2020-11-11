@@ -57,7 +57,7 @@ def loadTrips(analyzer):
     for filename in os.listdir(cf.data_dir):
         if filename.endswith('.csv'):
             print('Cargando archivo: ' + filename)
-            loadFile(analyzer, filename)
+            loadData(analyzer, filename)
     return analyzer
  
 def loadData(analyzer, archivo):
