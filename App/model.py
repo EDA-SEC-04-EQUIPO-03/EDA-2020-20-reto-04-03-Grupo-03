@@ -47,8 +47,9 @@ def Analizador():
         analyzer = {
                     'trips': None,
                     'connections': None,
-                    'components': None,
-                    'routes': None
+                    'bikeid': None,
+                    'components': None
+                    
                     }
 
         analyzer['trips'] = m.newMap(numelements=14000,
@@ -59,6 +60,10 @@ def Analizador():
                                               directed=True,
                                               size=14000,
                                               comparefunction=compareStations)
+        
+        #analyzer['bikeid'] = m.newMap(numelements=14000,
+         #                            maptype='CHAINING',
+          #                           comparefunction=None)
         return analyzer
  except Exception as exp:
         error.reraise(exp, 'model:Analizador')
@@ -86,53 +91,40 @@ def addConnection(analyzer, origin, destination, duration):
     """
     Adiciona un arco entre dos estaciones
     """
+    promedio=None
     edge = gr.getEdge(analyzer ["connections"], origin, destination)
     if edge is None:
         gr.addEdge(analyzer["connections"], origin, destination, duration)
+    elif edge is not None and promedio is None:
+        numero_viajes=1
+        promedio=int(edge["weight"])
+        promedio =(promedio*numero_viajes + duration)/(numero_viajes + 1)
+        numero_viajes += 1
+        edge["weight"]=promedio
+    else:
+        promedio=int(edge["weight"])
+        promedio =(promedio*numero_viajes + duration)/(numero_viajes + 1)
+        numero_viajes += 1
+        edge["weight"]=promedio
+    
+
     return analyzer
-
-
+        
 
 # ==============================
 # Funciones de consulta
 # ==============================
 
-def connectedComponents(analyzer):
-    """
-    Calcula los componentes conectados del grafo
-    Se utiliza el algoritmo de Kosaraju
-    """
-    print(" Iniciando")
-    analyzer['components'] = scc.KosarajuSCC(analyzer['connections'])
-    print(" Terminado")
-    return scc.connectedComponents(analyzer['components'])
+# Número de componentes conectados fuertemente
+def numSCC(analyzer):
+    sc = scc.KosarajuSCC(analyzer["connections"])
+    return scc.connectedComponents(sc)
+    
 
-
-def minimumCostPaths(analyzer, initialStation):
-    """
-    Calcula los caminos de costo mínimo desde la estacion initialStation
-    a todos los demas vertices del grafo
-    """
-    analyzer['routes'] = djk.Dijkstra(analyzer['connections'], initialStation)
-    return analyzer
-
-
-def hasPath(analyzer, destStation):
-    """
-    Indica si existe un camino desde la estacion inicial a la estación destino
-    Se debe ejecutar primero la funcion minimumCostPaths
-    """
-    return djk.hasPathTo(analyzer['routes'], destStation)
-
-
-def minimumCostPath(analyzer, destStation):
-    """
-    Retorna el camino de costo minimo entre la estacion de inicio
-    y la estacion destino
-    Se debe ejecutar primero la funcion minimumCostPaths
-    """
-    path = djk.pathTo(analyzer['routes'], destStation)
-    return path
+# ¿Dos estaciones en el mismo componente?
+def sameCC(analyzer, station1, station2):
+    sc = scc.KosarajuSCC(analyzer["connections"])
+    return scc.stronglyConnected(sc, station1, station2)
 
 
 def totalVertex(analyzer):
@@ -149,49 +141,11 @@ def totalConnections(analyzer):
     return gr.numEdges(analyzer['connections'])
 
 
-def servedRoutes(analyzer):
-    """
-    Retorna la estación que sirve a mas rutas.
-    Si existen varias rutas con el mismo numero se
-    retorna una de ellas
-    """
-    lstvert = m.keySet(analyzer['stops'])
-    itlstvert = it.newIterator(lstvert)
-    maxvert = None
-    maxdeg = 0
-    while(it.hasNext(itlstvert)):
-        vert = it.next(itlstvert)
-        lstroutes = m.get(analyzer['stops'], vert)['value']
-        degree = lt.size(lstroutes)
-        if(degree > maxdeg):
-            maxvert = vert
-            maxdeg = degree
-    return maxvert, maxdeg
-
 
 # ==============================
 # Funciones Helper
 # ==============================
 
-def cleanServiceDistance(lastservice, service):
-    """
-    En caso de que el archivo tenga un espacio en la
-    distancia, se reemplaza con cero.
-    """
-    if service['Distance'] == '':
-        service['Distance'] = 0
-    if lastservice['Distance'] == '':
-        lastservice['Distance'] = 0
-
-
-def formatVertex(service):
-    """
-    Se formatea el nombrer del vertice con el id de la estación
-    seguido de la ruta.
-    """
-    name = service['BusStopCode'] + '-'
-    name = name + service['ServiceNo']
-    return name
 
 
 # ==============================
@@ -210,14 +164,14 @@ def compareStations(stat, keyvalue):
     else:
         return -1
 
-
-def compareroutes(route1, route2):
+def compareBikeid(bike, keyvaluebike):
     """
-    Compara dos rutas
+    Compara dos bikeids
     """
-    if (route1 == route2):
+    bikecode = keyvaluebike['key']
+    if (bike == bikecode):
         return 0
-    elif (route1 > route2):
+    elif (bike > bikecode):
         return 1
     else:
         return -1
