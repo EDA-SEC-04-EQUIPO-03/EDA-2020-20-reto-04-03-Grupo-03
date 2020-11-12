@@ -68,7 +68,9 @@ def printMenu():
 
 def CargarInfo():
     print("\nCargando información de transporte de singapur ....")
+    # A continuación si se quieren cargar todos los archivos disponible .csv
     #controller.loadTrips(cont)
+    # A continuación si se quieren cargar archivo .csv específicos
     controller.loadData(cont, servicefile)
     numedges = controller.totalConnections(cont)
     numvertex = controller.totalVertex(cont)
