@@ -29,6 +29,7 @@ import sys
 import config
 from App import controller
 from DISClib.ADT import stack
+from DISClib.ADT import graph as g
 import timeit
 assert config
 
@@ -67,6 +68,7 @@ def printMenu():
 
 def CargarInfo():
     print("\nCargando información de transporte de singapur ....")
+    #controller.loadTrips(cont)
     controller.loadData(cont, servicefile)
     numedges = controller.totalConnections(cont)
     numvertex = controller.totalVertex(cont)
@@ -76,6 +78,12 @@ def CargarInfo():
     sys.setrecursionlimit(recursionLimit)
     print('El limite de recursion se ajusta a: ' + str(recursionLimit))
 
+def Req1():
+    E1=input("Ingrese la primer estación de interés: ")
+    E2=input("Ingrese la segunda estación de interés: ")
+    print("Num de componentes conectados: "+str(controller.numSCC(cont)))
+    print("Entre "+str(E1)+" y "+str(E2)+" es: "+str(controller.sameCC(cont,E1,E2))+" que pertenezcan al mismo cluster")
+    
 """
 Menu principal
 """
@@ -90,6 +98,9 @@ while True:
 
     elif int(inputs[0]) == 2:
         executiontime = timeit.timeit(CargarInfo, number=1)
+        print("Tiempo de ejecución: " + str(executiontime))
+    elif int(inputs[0]) == 3:
+        executiontime = timeit.timeit(Req1, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
 
     else:

@@ -110,14 +110,14 @@ def stronglyConnected(scc, verta, vertb):
     Dados dos vértices, informa si están fuertemente conectados o no.
     """
     try:
-        scca = map.get(scc['idscc'], verta)['value']
-        sccb = map.get(scc['idscc'], vertb)['value']
+        scca = map.get(scc['marked'], verta)['value']
+        sccb = map.get(scc['marked'], vertb)['value']
         if scca == sccb:
             return True
         return False
     except Exception as exp:
         error.reraise(exp, 'dfo:Sconnected')
-
+#idscc
 
 def connectedComponents(scc):
     """

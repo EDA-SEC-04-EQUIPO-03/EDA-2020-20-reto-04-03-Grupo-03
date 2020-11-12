@@ -26,6 +26,7 @@
 
 import config as cf
 from App import model
+import os as os
 import csv
 
 """
@@ -53,11 +54,17 @@ def init():
 #  de datos en los modelos
 # ___________________________________________________
 
+def loadTrips(analyzer):
+    for filename in os.listdir(cf.data_dir):
+        if filename.endswith(".csv"):
+            print("cargando....." + filename)
+            loadData(analyzer, filename)
+    return analyzer
 
 def loadData(analyzer, archivo):
     archivo = cf.data_dir + archivo
     input_file = csv.DictReader(open(archivo, encoding="utf-8"),
-                                delimiter=",")
+                                delimiter=",")                          
     for trip in input_file:
         model.AddViaje(analyzer, trip)
     return analyzer
@@ -67,6 +74,13 @@ def loadData(analyzer, archivo):
 # ___________________________________________________
 #  Funciones para consultas
 # ___________________________________________________
+
+
+def numSCC(analyzer):
+    return model.numSCC(analyzer)
+
+def sameCC(analyzer, station1, station2):
+    return model.sameCC(analyzer, station1, station2)
 
 def totalVertex(analyzer):
     """
@@ -80,40 +94,3 @@ def totalConnections(analyzer):
     Total de enlaces entre las paradas
     """
     return model.totalConnections(analyzer)
-
-
-def connectedComponents(analyzer):
-    """
-    Numero de componentes fuertemente conectados
-    """
-    return model.connectedComponents(analyzer)
-
-
-def minimumCostPaths(analyzer, initialStation):
-    """
-    Calcula todos los caminos de costo minimo de initialStation a todas
-    las otras estaciones del sistema
-    """
-    return model.minimumCostPaths(analyzer, initialStation)
-
-
-def hasPath(analyzer, destStation):
-    """
-    Informa si existe un camino entre initialStation y destStation
-    """
-    return model.hasPath(analyzer, destStation)
-
-
-def minimumCostPath(analyzer, destStation):
-    """
-    Retorna el camino de costo minimo desde initialStation a destStation
-    """
-    return model.minimumCostPath(analyzer, destStation)
-
-
-def servedRoutes(analyzer):
-    """
-    Retorna el camino de costo minimo desde initialStation a destStation
-    """
-    maxvert, maxdeg = model.servedRoutes(analyzer)
-    return maxvert, maxdeg
