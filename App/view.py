@@ -96,16 +96,20 @@ def Req3():
     A=input("Inserte una opción válida aca por favor: ")
     if int(A)==1:
         tripletop=controller.hallartop3(cont,"vertexA")
-        print("La primer estación de la que llegan más viajes es: "+str(tripletop[1]["Top1"])+"= "+str(tripletop[0]["Top1"]))
-        print("La segunda estación de la que llegan más viajes es: "+str(tripletop[1]["Top2"])+"= "+str(tripletop[0]["Top1"]))
-        print("La tercer estación de la que llegan más viajes es: "+str(tripletop[1]["Top3"])+"= "+str(tripletop[0]["Top1"]))
+        print("La primer estación de la que llegan más viajes es: "+str(tripletop[1]["Top1"])+" = "+str(tripletop[0]["Top1"]))
+        print("La segunda estación de la que llegan más viajes es: "+str(tripletop[1]["Top2"])+" = "+str(tripletop[0]["Top1"]))
+        print("La tercer estación de la que llegan más viajes es: "+str(tripletop[1]["Top3"])+" = "+str(tripletop[0]["Top1"]))
     elif int(A)==2:
         tripletop=controller.hallartop3(cont,"vertexB")
-        print("La primer estación de la que salen más viajes es: "+str(tripletop[1]["Top1"])+"= "+str(tripletop[0]["Top1"]))
-        print("La segunda estación de la que salen más viajes es: "+str(tripletop[1]["Top2"])+"= "+str(tripletop[0]["Top1"]))
-        print("La tercer estación de la que salen más viajes es: "+str(tripletop[1]["Top3"])+"= "+str(tripletop[0]["Top1"]))
+        print("La primer estación de la que salen más viajes es: "+str(tripletop[1]["Top1"])+" = "+str(tripletop[0]["Top1"]))
+        print("La segunda estación de la que salen más viajes es: "+str(tripletop[1]["Top2"])+" = "+str(tripletop[0]["Top1"]))
+        print("La tercer estación de la que salen más viajes es: "+str(tripletop[1]["Top3"])+" = "+str(tripletop[0]["Top1"]))
     elif int(A)==3: 
         tripleNotop=controller.minimunEdges(cont)
+        print("La primer estación menos usada: "+str(tripleNotop[1]["Top1"])+" = "+str(tripleNotop[0]["Top1"]))
+        print("La segunda estación menos usada: "+str(tripleNotop[1]["Top2"])+" = "+str(tripleNotop[0]["Top1"]))
+        print("La tercer estación menos usada "+str(tripleNotop[1]["Top3"])+" = "+str(tripleNotop[0]["Top1"]))
+    
     else:
         print("Esa opción no vale, intente de nuevo")
 """
