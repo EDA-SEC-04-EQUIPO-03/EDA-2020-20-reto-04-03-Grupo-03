@@ -134,7 +134,7 @@ while True:
         executiontime = timeit.timeit(Req1, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
     
-    
+    #Lora gei
     
     
     elif int(inputs[0]) == 5:
