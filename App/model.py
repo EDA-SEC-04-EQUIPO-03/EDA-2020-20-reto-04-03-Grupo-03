@@ -103,10 +103,33 @@ def addConnection(analyzer, origin, destination, duration):
         promedio =(promedio*numero_viajes + duration)/(numero_viajes + 1)
         numero_viajes += 1
         edge["weight"]=promedio
-    
-
     return analyzer
-        
+
+def Analizar_Top_Entry(analyzer):
+    lista=[]
+    estructura=totalEdges(analyzer["connections"])
+    iterator=it.newIterator(estructura)
+    while it.hasNext(iterator):
+        arco=it.next(iterator) #dict_keys(['vertexA', 'vertexB', 'weight'])
+        lista.append(arco["vertexA"])
+    top={"Top1":0,"Top2":0,"Top3":0}
+    maxi=0
+    for arco_entrada in lista:
+        valor=lista.count(arco_entrada)
+        if valor>maxi:
+            if valor>top["Top1"] and (valor != top["Top1"]) and valor>top["Top2"] and valor>top["Top3"]:
+                top["Top1"]=valor
+            elif valor>top["Top2"] and (valor != top["Top2"]) and valor>top["Top3"] and valor<top["Top1"]:
+                top["Top2"]=valor
+            elif valor>top["Top3"] and (valor != top["Top3"]) and valor<top["Top1"] and valor<top["Top2"]:
+                top["Top3"]=valor
+    return top
+
+#def O():
+    # Obtener vertices iniciales
+    #   Buscar veces que ese vertice esta en arco con f.librery
+    #     Establecer top3
+    #     Ret Dict
 
 # ==============================
 # Funciones de consulta
@@ -137,7 +160,8 @@ def totalConnections(analyzer):
     """
     return gr.numEdges(analyzer['connections'])
 
-
+def totalEdges(grafo):
+    return gr.edges(grafo)
 
 # ==============================
 # Funciones Helper

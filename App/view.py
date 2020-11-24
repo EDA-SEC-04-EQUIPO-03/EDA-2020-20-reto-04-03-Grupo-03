@@ -63,6 +63,8 @@ def printMenu():
     print("1- Inicializar Analizador")
     print("2- Cargar información ")
     print("3- Requerimiento #1 ")
+
+    print("5- Requerimiento #3 ")
     print("0- Salir")
     print("*******************************************")
 
@@ -86,6 +88,12 @@ def Req1():
     print("Num de componentes conectados: "+str(controller.numSCC(cont)))
     print("Entre "+str(E1)+" y "+str(E2)+" es: "+str(controller.sameCC(cont,E1,E2))+" que pertenezcan al mismo cluster")
     
+
+def Req3():
+    tripletop=controller.hallartop3(cont)
+    print("La primer estación de la que salen más viajes es: "+str(tripletop["Top1"]))
+    print("La segunda estación de la que salen más viajes es: "+str(tripletop["Top2"]))
+    print("La tercer estación de la que salen más viajes es: "+str(tripletop["Top3"]))
 """
 Menu principal
 """
@@ -104,7 +112,13 @@ while True:
     elif int(inputs[0]) == 3:
         executiontime = timeit.timeit(Req1, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
-
+    
+    
+    
+    
+    elif int(inputs[0]) == 5:
+        executiontime = timeit.timeit(Req3, number=1)
+        print("Tiempo de ejecución: " + str(executiontime))
     else:
         sys.exit(0)
 sys.exit(0)

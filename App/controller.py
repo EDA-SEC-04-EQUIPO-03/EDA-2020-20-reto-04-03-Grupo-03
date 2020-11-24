@@ -94,3 +94,9 @@ def totalConnections(analyzer):
     Total de enlaces entre las paradas
     """
     return model.totalConnections(analyzer)
+
+def hallartop3(analyzer):
+    """
+    Encontrar Top3 +
+    """
+    return model.Analizar_Top_Entry(analyzer)
