@@ -95,8 +95,14 @@ def totalConnections(analyzer):
     """
     return model.totalConnections(analyzer)
 
-def hallartop3(analyzer):
+def hallartop3(analyzer,vertice):
     """
-    Encontrar Top3 +
+    Encontrar Top3 salida +
     """
-    return model.Analizar_Top_Entry(analyzer)
+    return model.Analizar_Top_Entry(analyzer,vertice)
+
+def minimunEdges(analyzer):
+    """
+    Encontrar estaciones con menos arcos
+    """
+    return model.Never_top(analyzer)

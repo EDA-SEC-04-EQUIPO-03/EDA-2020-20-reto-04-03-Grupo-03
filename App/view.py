@@ -90,10 +90,24 @@ def Req1():
     
 
 def Req3():
-    tripletop=controller.hallartop3(cont)
-    print("La primer estación de la que salen más viajes es: "+str(tripletop["Top1"]))
-    print("La segunda estación de la que salen más viajes es: "+str(tripletop["Top2"]))
-    print("La tercer estación de la que salen más viajes es: "+str(tripletop["Top3"]))
+    print("Escriba a continuación -1- si quiere analizar top de estaciones de llegada")
+    print("Escriba a continuación -2- si quiere analizar top de estaciones de salida")
+    print("Escriba a continuación -3- si quiere analizar estaciones menos usadas")
+    A=input("Inserte una opción válida aca por favor: ")
+    if int(A)==1:
+        tripletop=controller.hallartop3(cont,"vertexA")
+        print("La primer estación de la que llegan más viajes es: "+str(tripletop[1]["Top1"])+"= "+str(tripletop[0]["Top1"]))
+        print("La segunda estación de la que llegan más viajes es: "+str(tripletop[1]["Top2"])+"= "+str(tripletop[0]["Top1"]))
+        print("La tercer estación de la que llegan más viajes es: "+str(tripletop[1]["Top3"])+"= "+str(tripletop[0]["Top1"]))
+    elif int(A)==2:
+        tripletop=controller.hallartop3(cont,"vertexB")
+        print("La primer estación de la que salen más viajes es: "+str(tripletop[1]["Top1"])+"= "+str(tripletop[0]["Top1"]))
+        print("La segunda estación de la que salen más viajes es: "+str(tripletop[1]["Top2"])+"= "+str(tripletop[0]["Top1"]))
+        print("La tercer estación de la que salen más viajes es: "+str(tripletop[1]["Top3"])+"= "+str(tripletop[0]["Top1"]))
+    elif int(A)==3: 
+        tripleNotop=controller.minimunEdges(cont)
+    else:
+        print("Esa opción no vale, intente de nuevo")
 """
 Menu principal
 """

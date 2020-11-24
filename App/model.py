@@ -105,25 +105,49 @@ def addConnection(analyzer, origin, destination, duration):
         edge["weight"]=promedio
     return analyzer
 
-def Analizar_Top_Entry(analyzer):
+def Analizar_Top_Entry(analyzer,vertice):
     lista=[]
     estructura=totalEdges(analyzer["connections"])
     iterator=it.newIterator(estructura)
     while it.hasNext(iterator):
         arco=it.next(iterator) #dict_keys(['vertexA', 'vertexB', 'weight'])
-        lista.append(arco["vertexA"])
-    top={"Top1":0,"Top2":0,"Top3":0}
-    maxi=0
+        lista.append(arco[vertice])
+    top={"Top1":1,"Top2":1,"Top3":1} #valores
+    Top={"Top1":None,"Top2":None,"Top3":None} #nombres
     for arco_entrada in lista:
         valor=lista.count(arco_entrada)
-        if valor>maxi:
-            if valor>top["Top1"] and (valor != top["Top1"]) and valor>top["Top2"] and valor>top["Top3"]:
-                top["Top1"]=valor
-            elif valor>top["Top2"] and (valor != top["Top2"]) and valor>top["Top3"] and valor<top["Top1"]:
-                top["Top2"]=valor
-            elif valor>top["Top3"] and (valor != top["Top3"]) and valor<top["Top1"] and valor<top["Top2"]:
-                top["Top3"]=valor
-    return top
+        if valor>top["Top1"] and (arco_entrada != Top["Top1"]) and valor>top["Top2"] and valor>top["Top3"]:
+            top["Top1"]=valor
+            Top["Top1"]=arco_entrada
+        elif valor>top["Top2"] and (arco_entrada != Top["Top2"]) and valor>top["Top3"] and valor<top["Top1"]: #and Top["Top2"]!=Top["Top1"]
+            top["Top2"]=valor
+            Top["Top2"]=arco_entrada
+        elif valor>top["Top3"] and (arco_entrada != Top["Top3"]) and valor<top["Top1"] and valor<top["Top2"]: #and Top["Top2"]!=Top["Top1"]
+            top["Top3"]=valor
+            Top["Top3"]=arco_entrada
+    return top,Top
+
+def Never_top(analyzer):
+    lista=[]
+    estructura=totalVertices(analyzer["connections"])
+    iterator=it.newIterator(estructura)
+    while it.hasNext(iterator):
+        edge=it.next(iterator) #str
+        lista.append(edge)
+    top={"Top1":9999,"Top2":9999,"Top3":9999}
+    Top={"Top1":None,"Top2":None,"Top3":None}
+    for arco in lista:
+        num_edges=arcosXvertex(arco)
+        if num_edges<top["Top1"] and num_edges<top["Top2"] and num_edges<top["Top3"] and arco!=Top["Top1"]:
+            top["Top1"]=num_edges
+            Top["Top1"]=arco
+        elif num_edges<top["Top2"] and num_edges<top["Top3"] and num_edges>top["Top1"] and arco!=Top["Top2"]:
+            top["Top2"]=num_edges
+            Top["Top2"]=arco
+        elif num_edges<top["Top3"] and num_edges>top["Top2"] and num_edges>top["Top1"] and arco!=Top["Top3"]:
+            top["Top3"]=num_edges
+            Top["Top3"]=arco
+    return top, Top
 
 #def O():
     # Obtener vertices iniciales
@@ -161,7 +185,22 @@ def totalConnections(analyzer):
     return gr.numEdges(analyzer['connections'])
 
 def totalEdges(grafo):
+    """
+    Retorna todos los arcos del grafo
+    """
     return gr.edges(grafo)
+
+def totalVertices(grafo):
+    """
+    Retorna todos los vertices del grafo
+    """
+    return gr.vertices(grafo)
+
+def arcosXvertex(word):
+    """
+    Retorna arcos del vertice
+    """
+    return gr.degree(word)
 
 # ==============================
 # Funciones Helper
