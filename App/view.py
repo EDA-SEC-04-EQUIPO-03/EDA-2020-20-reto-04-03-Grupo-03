@@ -112,6 +112,9 @@ def Req3():
     
     else:
         print("Esa opción no vale, intente de nuevo")
+
+def Req4():
+    print("haloja ")
 """
 Menu principal
 """
@@ -136,6 +139,9 @@ while True:
     
     elif int(inputs[0]) == 5:
         executiontime = timeit.timeit(Req3, number=1)
+        print("Tiempo de ejecución: " + str(executiontime))
+    elif int(inputs[0]) == 6:
+        executiontime = timeit.timeit(Req4, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
     else:
         sys.exit(0)

@@ -137,7 +137,7 @@ def Never_top(analyzer):
     top={"Top1":9999,"Top2":9999,"Top3":9999}
     Top={"Top1":None,"Top2":None,"Top3":None}
     for arco in lista:
-        num_edges=arcosXvertex(arco)
+        num_edges=arcosXvertex(analyzer["connections"],arco)
         if num_edges<top["Top1"] and num_edges<top["Top2"] and num_edges<top["Top3"] and arco!=Top["Top1"]:
             top["Top1"]=num_edges
             Top["Top1"]=arco
@@ -196,11 +196,11 @@ def totalVertices(grafo):
     """
     return gr.vertices(grafo)
 
-def arcosXvertex(word):
+def arcosXvertex(grafo,word):
     """
     Retorna arcos del vertice
     """
-    return gr.degree(word)
+    return gr.degree(grafo,word)
 
 # ==============================
 # Funciones Helper
