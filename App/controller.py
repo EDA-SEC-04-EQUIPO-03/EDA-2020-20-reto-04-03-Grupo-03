@@ -64,9 +64,11 @@ def loadTrips(analyzer):
 def loadData(analyzer, archivo):
     archivo = cf.data_dir + archivo
     input_file = csv.DictReader(open(archivo, encoding="utf-8"),
-                                delimiter=",")                          
+                                delimiter=",")                  
     for trip in input_file:
         model.AddViaje(analyzer, trip)
+        fecha=trip["birth year"]
+        model.AddViajePorhora(analyzer,fecha ,trip)
     return analyzer
 
 
