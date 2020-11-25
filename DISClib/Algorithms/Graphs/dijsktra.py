@@ -192,7 +192,7 @@ def initSearch(graph, source):
                'iminpq': None
              }
 
-        search['visited'] = map.newMap(numelements=g.numVertices(graph),
+        search['visited'] = map.newMap(numelements=g.numVertex(graph),
                                        maptype='PROBING',
                                        comparefunction=graph['comparefunction']
                                        )

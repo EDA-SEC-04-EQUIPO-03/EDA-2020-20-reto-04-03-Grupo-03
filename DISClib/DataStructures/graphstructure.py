@@ -87,7 +87,7 @@ def removeVertex(graph, vertex):
         return alt.removeVertex(graph, vertex)
 
 
-def numVertices(graph):
+def numVertex(graph):
     """
     Retorna el numero de vertices en el  grafo graph
 
@@ -100,7 +100,7 @@ def numVertices(graph):
         Exception
     """
     if (graph['type'] == "ADJ_LIST"):
-        return alt.numVertices(graph)
+        return alt.numVertex(graph)
 
 
 def numEdges(graph):

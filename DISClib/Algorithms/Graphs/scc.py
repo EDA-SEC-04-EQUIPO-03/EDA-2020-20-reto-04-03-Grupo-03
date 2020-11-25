@@ -55,15 +55,15 @@ def KosarajuSCC(graph):
                 'components': 0
             }
 
-        scc['idscc'] = map.newMap(g.numVertices(graph),
+        scc['idscc'] = map.newMap(g.numVertex(graph),
                                   maptype='PROBING',
                                   comparefunction=graph['comparefunction']
                                   )
 
-        scc['marked'] = map.newMap(g.numVertices(graph), maptype='PROBING',
+        scc['marked'] = map.newMap(g.numVertex(graph), maptype='PROBING',
                                    comparefunction=graph['comparefunction']
                                    )
-        scc['grmarked'] = map.newMap(g.numVertices(graph), maptype='PROBING',
+        scc['grmarked'] = map.newMap(g.numVertex(graph), maptype='PROBING',
                                      comparefunction=graph['comparefunction']
                                      )
 
@@ -75,12 +75,12 @@ def KosarajuSCC(graph):
         grevrevpost = dforeverse['reversepost']
 
         # Se recorre el grafo en el orden dado por reversepost (G-reverso)
-        scc['components'] = 0
+        scc['components'] = 1
         while (not stack.isEmpty(grevrevpost)):
             vert = stack.pop(grevrevpost)
             if not map.contains(scc['marked'], vert):
-                scc['components'] += 1
                 sccCount(graph, scc, vert)
+                scc['components'] += 1
         return scc
     except Exception as exp:
         error.reraise(exp, 'scc:Kosaraju')
@@ -117,7 +117,7 @@ def stronglyConnected(scc, verta, vertb):
         return False
     except Exception as exp:
         error.reraise(exp, 'dfo:Sconnected')
-#idscc
+
 
 def connectedComponents(scc):
     """
@@ -138,7 +138,7 @@ def reverseGraph(graph):
         Retornar el reverso del grafo graph
     """
     try:
-        greverse = g.newGraph(size=g.numVertices(graph),
+        greverse = g.newGraph(size=g.numVertex(graph),
                               directed=True,
                               comparefunction=graph['comparefunction']
                               )
