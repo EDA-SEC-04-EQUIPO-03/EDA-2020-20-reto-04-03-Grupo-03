@@ -65,8 +65,6 @@ def printMenu():
     print("3- Requerimiento #1 ")
 
     print("5- Requerimiento #3 ")
-
-    print("7- Requerimiento #5 ")
     print("0- Salir")
     print("*******************************************")
 
@@ -117,21 +115,6 @@ def Req3():
 
 def Req4():
     print("haloja ")
-
-def Req5():
-    print("Querido usuario, siga las intrucciones: ")
-    print("->   Si usted tiene entre 0-10 años marque -1-")
-    print("->   Si usted tiene entre 11-20 años marque -2-")
-    print("->   Si usted tiene entre 21-30 años marque -3-")
-    print("->   Si usted tiene entre 31-40 años marque -4-")
-    print("->   Si usted tiene entre 41-50 años marque -5-")
-    print("->   Si usted tiene entre 51-60 años marque -6-")
-    print("->   Si usted tiene más de 60 años años marque -7-")
-    opcion=input("Ingrese aca su opción según su edad: ")
-    Opcion=int(opcion)
-    trip=controller.tripsyear(cont,Opcion)
-    
-
 """
 Menu principal
 """
@@ -152,16 +135,13 @@ while True:
         print("Tiempo de ejecución: " + str(executiontime))
     
     #Lora gei
-    #ola sonido si? si?
+    #ola si? si=
     
     elif int(inputs[0]) == 5:
         executiontime = timeit.timeit(Req3, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
     elif int(inputs[0]) == 6:
         executiontime = timeit.timeit(Req4, number=1)
-        print("Tiempo de ejecución: " + str(executiontime))
-    elif int(inputs[0]) == 7:
-        executiontime = timeit.timeit(Req5, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
     else:
         sys.exit(0)
