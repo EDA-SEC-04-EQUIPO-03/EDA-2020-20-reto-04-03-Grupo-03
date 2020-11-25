@@ -108,3 +108,6 @@ def minimunEdges(analyzer):
     Encontrar estaciones con menos arcos
     """
     return model.Never_top(analyzer)
+
+def tripsyear(analyzer,numero):
+    return model.getTripsFecha(analyzer,numero)

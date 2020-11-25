@@ -65,6 +65,8 @@ def printMenu():
     print("3- Requerimiento #1 ")
 
     print("5- Requerimiento #3 ")
+
+    print("7- Requerimiento #5 ")
     print("0- Salir")
     print("*******************************************")
 
@@ -125,7 +127,9 @@ def Req5():
     print("->   Si usted tiene entre 41-50 años marque -5-")
     print("->   Si usted tiene entre 51-60 años marque -6-")
     print("->   Si usted tiene más de 60 años años marque -7-")
-    opción=input("Ingrese aca su opción según su edad: ")
+    opcion=input("Ingrese aca su opción según su edad: ")
+    Opcion=int(opcion)
+    trip=controller.tripsyear(cont,Opcion)
     
 
 """

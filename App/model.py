@@ -162,16 +162,17 @@ def Never_top(analyzer):
     #     Establecer top3
     #     Ret Dict
 
-def AddViajePorhora(analyzer, fecha,trip):  #viaje es la entada del hash
+def AddViajePorhora(analyzer, fecha,trip):  #trip:linea de archivo, fecha:año de cada archivo
     structure=analyzer["years"]
     hayviaje= m.contains(structure, fecha)
     if hayviaje:
-        entrada=m.get(structure, fecha) #single linked mapa -value-
-        struc=me.getValue(entrada) #info-trips structure
+        entrada=m.get(structure, fecha) #//dict: llave/valor = año/{"info":"","trips":singlelinked}
+        struc=me.getValue(entrada)  #//dict -> return: {"info":"año","trips":singlelinked} 
     else:
-        struc=newViajeFecha(fecha)
-        m.put(structure, fecha, struc) #args: Map, key value
-    lt.addLast(struc["trips"], trip)
+        struc=newViajeFecha(fecha) #crear
+        m.put(structure, fecha, struc) #args: Map, key value //2020:{"info":"","trips":singlelinked}
+    lt.addLast(struc["trips"], trip) #{"info":"","trips":singlelinked}   añadir en trips linea archivo
+
 
 def newViajeFecha(año):
     entry = {'info': "", "trips": None}
@@ -181,14 +182,30 @@ def newViajeFecha(año):
 
 def getTripsFecha(analyzer, opción):
     mapa=analyzer["years"]
+    estacionentrada=123
+    entradabig=0
+    estacionsalida=321
+    salidabig=0
     if opción==1:
         i=0
         while i<=10:
-            listadesingles=m.get(mapa,i) #mapa-llave(año) //10 veces
-            cada_single=m.getValue(listadesingles)
-            iterator=it.newIterator(listadesingles)
+            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+            single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
+            iterator=it.newIterator(single["trips"])
             while it.hasNext(iterator):
-                trip = it.next(iterator)
+                lineaarchivo = it.next(iterator)
+                #chequear estacion mas salidas-vertexA-
+                mayorsalida=salenviajes(analyzer["connections"],lineaarchivo["start station id"]) #int
+                #chequear estación mas llegadas -vertexB-
+                mayorentrada=entranviajes(analyzer["connections"],lineaarchivo["end station id"]) #int
+                if mayorentrada>entradabig:
+                    entradabig=mayorentrada
+                    estacionentrada=lineaarchivo["end station id"]
+                if mayorsalida>salidabig:
+                    salidabig=mayorsalida
+                    estacionsalida=lineaarchivo["start station id"]
+            i+=1
+    # retornar estructura{"EstacionE":estacionentrada,"ValorE":entradabig,"EstacionS":estacionsalida,"ValorS":salidabig}
     elif opción==2:
         i=11
         while i<=20:
@@ -215,7 +232,7 @@ def getTripsFecha(analyzer, opción):
             print("")
     else:
         print("Esa opción no vale")
-        l
+    return {"EstacionE":estacionentrada,"ValorE":entradabig,"EstacionS":estacionsalida,"ValorS":salidabig}
 
 # ==============================
 # Funciones de consulta
@@ -266,6 +283,18 @@ def arcosXvertex(grafo,word):
     b=gr.outdegree(grafo,word)
     return a+b
 
+def salenviajes(grafo,word):
+    """
+    numero de arcos que salen del vertex (word)
+    """
+    return gr.outdegree(grafo,word)
+
+def entranviajes(grafo,word):
+    """
+    numero de arcos que entran al vertex (word)
+    """
+    return gr.indegree(grafo,word)
+
 # ==============================
 # Funciones Helper
 # ==============================
@@ -301,9 +330,12 @@ def compareBikeid(bike, keyvaluebike):
         return -1
 
 def compareDates(date1, date2):
-    if (date1 == date2):
+    date20=me.getKey(date2)
+    #print(date1)
+    #print(date2)
+    if (date1 == date20):
         return 0
-    elif (date1 > date2):
+    elif (date1 > date20):
         return 1
     else:
         return -1
