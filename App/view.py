@@ -152,7 +152,7 @@ while True:
         print("Tiempo de ejecución: " + str(executiontime))
     
     #Lora gei
-    
+    #ola sonido si? si?
     
     elif int(inputs[0]) == 5:
         executiontime = timeit.timeit(Req3, number=1)
