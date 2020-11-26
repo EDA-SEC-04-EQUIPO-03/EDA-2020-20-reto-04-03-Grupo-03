@@ -63,7 +63,7 @@ def printMenu():
     print("1- Inicializar Analizador")
     print("2- Cargar información ")
     print("3- Requerimiento #1 ")
-
+    print("4- Requerimiento #2 ")
     print("5- Requerimiento #3 ")
 
     print("7- Requerimiento #5 ")
@@ -90,6 +90,29 @@ def Req1():
     print("Num de componentes conectados: "+str(controller.numSCC(cont)))
     print("Entre "+str(E1)+" y "+str(E2)+" es: "+str(controller.sameCC(cont,E1,E2))+" que pertenezcan al mismo cluster")
     
+def Req2():
+    print("A continuación tendrá que informar el tiempo que dispone para un viaje")
+    print("Ejemplo: 180 y 240 minutos, no ponga decimales por la seguridad del programa")
+    print("Rango inicial del ejemplo es 180")
+    print("Rango final del ejemplo es 240")
+    limite=input("Ingrese su rango inicial de tiempo disponible para un viaje: ")
+    Limite=input("Ingrese su rango final de tiempo disponible para un viaje: ")
+    vertex=input("Ingrese el ID de su estación de salida: ")
+    tupla=controller.rutacircular(cont,vertex)
+    imprimir_ruta(tupla[0], tupla[1], limite, Limite)
+
+def imprimir_ruta(peso, listavertices, limitemenor, limitemayor):
+    i=0
+    if peso<int(limitemayor) and peso>int(limitemenor):
+        print("Estación de salida: "+listavertices[i])
+        print("Estación de llegada: "+listavertices[i+1])
+        print("_________________________________________")
+        i+=1
+    else:
+        print("No hubo recorrido, el tiempo necesario excede su tiempo disponible")
+    print("El numero total de rutas circulares es: "+str(i))
+    print("El tiempo total del recorrido es: "+str(peso))
+
 
 def Req3():
     print("Escriba a continuación -1- si quiere analizar top de estaciones de llegada")
@@ -130,6 +153,8 @@ def Req5():
     opcion=input("Ingrese aca su opción según su edad: ")
     Opcion=int(opcion)
     trip=controller.tripsyear(cont,Opcion)
+    print("La estación de entrada es: "+str(trip["EstacionE"])+" de valor "+str(trip["ValorE"]))
+    print("La estación de salida es: "+str(trip["EstacionS"])+" de valor "+str(trip["ValorS"]))
     
 
 """
@@ -150,10 +175,9 @@ while True:
     elif int(inputs[0]) == 3:
         executiontime = timeit.timeit(Req1, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
-    
-    #Lora gei
-    #guardar
-    
+    elif int(inputs[0]) == 4:
+        executiontime = timeit.timeit(Req2, number=1)
+        print("Tiempo de ejecución: " + str(executiontime))
     elif int(inputs[0]) == 5:
         executiontime = timeit.timeit(Req3, number=1)
         print("Tiempo de ejecución: " + str(executiontime))

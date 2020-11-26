@@ -68,7 +68,9 @@ def loadData(analyzer, archivo):
     for trip in input_file:
         model.AddViaje(analyzer, trip)
         fecha=trip["birth year"]
+        ID=trip["start station id"]
         model.AddViajePorhora(analyzer,fecha ,trip)
+        model.AddViajePorID(analyzer, ID, trip)
     return analyzer
 
 
@@ -111,3 +113,6 @@ def minimunEdges(analyzer):
 
 def tripsyear(analyzer,numero):
     return model.getTripsFecha(analyzer,numero)
+
+def rutacircular(analyzer, vertex):
+    return model.hallar_ruta_circular(analyzer, vertex)

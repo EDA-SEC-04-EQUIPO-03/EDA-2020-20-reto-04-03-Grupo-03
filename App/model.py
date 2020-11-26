@@ -55,7 +55,7 @@ def Analizador():
                     }
 
         analyzer['trips'] = m.newMap(numelements=14000,
-                                     maptype='PROBING',
+                                     maptype='CHAINING',
                                      comparefunction=compareStations)
 
         analyzer['connections'] = gr.newGraph(datastructure='ADJ_LIST',
@@ -177,7 +177,7 @@ def AddViajePorhora(analyzer, fecha,trip):  #trip:linea de archivo, fecha:año d
 def newViajeFecha(año):
     entry = {'info': "", "trips": None}
     entry['info'] = año
-    entry['trips'] = lt.newList('ARRAY_LIST', compareDates)
+    entry['trips'] = lt.newList('SINGLE_LINKED', compareDates)
     return entry
 
 def getTripsFecha(analyzer, opción):
@@ -187,52 +187,200 @@ def getTripsFecha(analyzer, opción):
     estacionsalida=321
     salidabig=0
     if opción==1:
-        i=0
-        while i<=10:
+        i=2010
+        while i<=2020:
             listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
-            single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
-            iterator=it.newIterator(single["trips"])
-            while it.hasNext(iterator):
-                lineaarchivo = it.next(iterator)
-                #chequear estacion mas salidas-vertexA-
-                mayorsalida=salenviajes(analyzer["connections"],lineaarchivo["start station id"]) #int
-                #chequear estación mas llegadas -vertexB-
-                mayorentrada=entranviajes(analyzer["connections"],lineaarchivo["end station id"]) #int
-                if mayorentrada>entradabig:
-                    entradabig=mayorentrada
-                    estacionentrada=lineaarchivo["end station id"]
-                if mayorsalida>salidabig:
-                    salidabig=mayorsalida
-                    estacionsalida=lineaarchivo["start station id"]
+            #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
+            if listadesingles is not None:
+                single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
+                iterator=it.newIterator(single["trips"])
+                while it.hasNext(iterator):
+                    lineaarchivo = it.next(iterator)
+                    #chequear estacion mas salidas-vertexA-
+                    mayorsalida=salenviajes(analyzer["connections"],lineaarchivo["start station id"]) #int
+                    #chequear estación mas llegadas -vertexB-
+                    mayorentrada=entranviajes(analyzer["connections"],lineaarchivo["end station id"]) #int
+                    if mayorentrada>entradabig:
+                        entradabig=mayorentrada
+                        estacionentrada=lineaarchivo["end station id"]
+                    if mayorsalida>salidabig:
+                        salidabig=mayorsalida
+                        estacionsalida=lineaarchivo["start station id"]
             i+=1
     # retornar estructura{"EstacionE":estacionentrada,"ValorE":entradabig,"EstacionS":estacionsalida,"ValorS":salidabig}
     elif opción==2:
-        i=11
-        while i<=20:
-            print("")
+        i=2009
+        while i<=2000:
+            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+            #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
+            if listadesingles is not None:
+                single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
+                iterator=it.newIterator(single["trips"])
+                while it.hasNext(iterator):
+                    lineaarchivo = it.next(iterator)
+                    #chequear estacion mas salidas-vertexA-
+                    mayorsalida=salenviajes(analyzer["connections"],lineaarchivo["start station id"]) #int
+                    #chequear estación mas llegadas -vertexB-
+                    mayorentrada=entranviajes(analyzer["connections"],lineaarchivo["end station id"]) #int
+                    if mayorentrada>entradabig:
+                        entradabig=mayorentrada
+                        estacionentrada=lineaarchivo["end station id"]
+                    if mayorsalida>salidabig:
+                        salidabig=mayorsalida
+                        estacionsalida=lineaarchivo["start station id"]
+            i+=1
     elif opción==3:
-        i=21
-        while i<=30:
-            print("")
+        i=1999
+        while i<=1990:
+            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+            #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
+            if listadesingles is not None:
+                single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
+                iterator=it.newIterator(single["trips"])
+                while it.hasNext(iterator):
+                    lineaarchivo = it.next(iterator)
+                    #chequear estacion mas salidas-vertexA-
+                    mayorsalida=salenviajes(analyzer["connections"],lineaarchivo["start station id"]) #int
+                    #chequear estación mas llegadas -vertexB-
+                    mayorentrada=entranviajes(analyzer["connections"],lineaarchivo["end station id"]) #int
+                    if mayorentrada>entradabig:
+                        entradabig=mayorentrada
+                        estacionentrada=lineaarchivo["end station id"]
+                    if mayorsalida>salidabig:
+                        salidabig=mayorsalida
+                        estacionsalida=lineaarchivo["start station id"]
+            i+=1
     elif opción==4:
-        i=31
-        while i<=40:
-            print("")
+        i=1989
+        while i<=1980:
+            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+            #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
+            if listadesingles is not None:
+                single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
+                iterator=it.newIterator(single["trips"])
+                while it.hasNext(iterator):
+                    lineaarchivo = it.next(iterator)
+                    #chequear estacion mas salidas-vertexA-
+                    mayorsalida=salenviajes(analyzer["connections"],lineaarchivo["start station id"]) #int
+                    #chequear estación mas llegadas -vertexB-
+                    mayorentrada=entranviajes(analyzer["connections"],lineaarchivo["end station id"]) #int
+                    if mayorentrada>entradabig:
+                        entradabig=mayorentrada
+                        estacionentrada=lineaarchivo["end station id"]
+                    if mayorsalida>salidabig:
+                        salidabig=mayorsalida
+                        estacionsalida=lineaarchivo["start station id"]
+            i+=1
     elif opción==5:
-        i=41
-        while i<=50:
-            print("")
+        i=1979
+        while i<=1970:
+            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+            #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
+            if listadesingles is not None:
+                single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
+                iterator=it.newIterator(single["trips"])
+                while it.hasNext(iterator):
+                    lineaarchivo = it.next(iterator)
+                    #chequear estacion mas salidas-vertexA-
+                    mayorsalida=salenviajes(analyzer["connections"],lineaarchivo["start station id"]) #int
+                    #chequear estación mas llegadas -vertexB-
+                    mayorentrada=entranviajes(analyzer["connections"],lineaarchivo["end station id"]) #int
+                    if mayorentrada>entradabig:
+                        entradabig=mayorentrada
+                        estacionentrada=lineaarchivo["end station id"]
+                    if mayorsalida>salidabig:
+                        salidabig=mayorsalida
+                        estacionsalida=lineaarchivo["start station id"]
+            i+=1
     elif opción==6:
-        i=51
-        while i<=60:
-            print("")
+        i=1969
+        while i<=1960:
+            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+            #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
+            if listadesingles is not None:
+                single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
+                iterator=it.newIterator(single["trips"])
+                while it.hasNext(iterator):
+                    lineaarchivo = it.next(iterator)
+                    #chequear estacion mas salidas-vertexA-
+                    mayorsalida=salenviajes(analyzer["connections"],lineaarchivo["start station id"]) #int
+                    #chequear estación mas llegadas -vertexB-
+                    mayorentrada=entranviajes(analyzer["connections"],lineaarchivo["end station id"]) #int
+                    if mayorentrada>entradabig:
+                        entradabig=mayorentrada
+                        estacionentrada=lineaarchivo["end station id"]
+                    if mayorsalida>salidabig:
+                        salidabig=mayorsalida
+                        estacionsalida=lineaarchivo["start station id"]
+            i+=1
     elif opción==7:
-        i=61
-        while i<100:
-            print("")
+        i=1959
+        while i<1920:
+            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+            #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
+            if listadesingles is not None:
+                single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
+                iterator=it.newIterator(single["trips"])
+                while it.hasNext(iterator):
+                    lineaarchivo = it.next(iterator)
+                    #chequear estacion mas salidas-vertexA-
+                    mayorsalida=salenviajes(analyzer["connections"],lineaarchivo["start station id"]) #int
+                    #chequear estación mas llegadas -vertexB-
+                    mayorentrada=entranviajes(analyzer["connections"],lineaarchivo["end station id"]) #int
+                    if mayorentrada>entradabig:
+                        entradabig=mayorentrada
+                        estacionentrada=lineaarchivo["end station id"]
+                    if mayorsalida>salidabig:
+                        salidabig=mayorsalida
+                        estacionsalida=lineaarchivo["start station id"]
+            i+=1
     else:
-        print("Esa opción no vale")
+        print("Esa opción no vale, no creemos que tenga más de 100 años")
     return {"EstacionE":estacionentrada,"ValorE":entradabig,"EstacionS":estacionsalida,"ValorS":salidabig}
+
+def hallar_ruta_circular(analyzer,vertice):
+    pesot=0
+    lista=[]
+    estructura=totalEdges(analyzer["connections"])
+    iterator=it.newIterator(estructura)
+    while it.hasNext(iterator):
+        arco=it.next(iterator) #dict_keys(['vertexA', 'vertexB', 'weight'])
+        if arco["vertexA"]==vertice and sameCC(analyzer,vertice,arco["vertexB"]):
+            pesot = pesot+arco["weight"]
+            vertice = arco["vertexB"]
+            ###
+            listadesingles=m.get(analyzer["trips"],arco["vertexA"]) #id/{"id":"","viaje":singlelinked} 
+            single=me.getValue(listadesingles)  #//dict -> return: {"id":"","viaje":singlelinked} 
+            iterator=it.newIterator(single["viaje"]) 
+            while it.hasNext(iterator):
+                lineaarchivo = it.next(iterator) #//tengo lista con "start id" igual y "end id" distinto
+                if lineaarchivo["end station id"]==arco["vertexB"]:
+                    lista.append(lineaarchivo["start station name"])
+                    lista.append(lineaarchivo["end station name"])
+            ###
+    return (pesot,lista) #peso total, estación final, numero de rutas circulares
+
+
+
+def AddViajePorID(analyzer, ids,trip):  #trip:linea de archivo, fecha:año de cada archivo
+    mapa=analyzer["trips"]
+    hayviaje= m.contains(mapa, ids)
+    if hayviaje:
+        entrada=m.get(mapa, ids) #//dict: llave/valor = id/{"id":"","viaje":singlelinked}
+        struk=me.getValue(entrada)  #//dict -> return: {"id":"id","viaje":singlelinked} 
+    else:
+        struk=newID(ids) #crear
+        m.put(mapa, ids, struk) #args: Map, key value //72:{"info":"","trips":singlelinked}
+    lt.addLast(struk["viaje"], trip) #{"id":"id","viaje":singlelinked}   añadir en viajes linea archivo
+
+def newID(ids):
+    entry = {'id': "", "viaje": None}
+    entry['id'] = ids
+    entry['viaje'] = lt.newList('SINGLE_LINKED', compareStations)
+    return entry
+
+def hallar_ruta(analyzer):
+    
 
 # ==============================
 # Funciones de consulta
