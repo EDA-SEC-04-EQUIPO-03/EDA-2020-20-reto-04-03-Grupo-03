@@ -48,16 +48,19 @@ def Dijkstra(graph, source):
         Un nuevo grafo vacío
     Raises:
         Exception
+                'source': vertice inicial,
+               'visited': mapa, compare ids,
+               'iminpq': cola de prioridad min pq
     """
     try:
         search = initSearch(graph, source)
         while not iminpq.isEmpty(search['iminpq']):
-            v = iminpq.delMin(search['iminpq'])
+            v = iminpq.delMin(search['iminpq']) # v es el vertice eliminado
             edges = g.adjacentEdges(graph, v)
             if edges is not None:
                 edgesiter = it.newIterator(edges)
                 while (it.hasNext(edgesiter)):
-                    edge = it.next(edgesiter)
+                    edge = it.next(edgesiter) #cada arco
                     relax(search, edge)
         return search
     except Exception as exp:
@@ -158,10 +161,10 @@ def pathTo(search, vertex):
             return None
         path = stack.newStack()
         while vertex != search['source']:
-            visited_v = map.get(search['visited'], vertex)['value']
-            edge = visited_v['edgeTo']
-            stack.push(path, edge)
-            vertex = e.either(edge)
+            visited_v = map.get(search['visited'], vertex)['value']# visited = mapa, compare ids,
+            edge = visited_v['edgeTo'] #edge to es el arco adjacente que le sigue
+            stack.push(path, edge) #agregar arco despues de el de inicio
+            vertex = e.either(edge) 
         return path
     except Exception as exp:
         error.reraise(exp, 'dks:pathto')
@@ -199,7 +202,7 @@ def initSearch(graph, source):
         vertices = g.vertices(graph)
         itvertices = it.newIterator(vertices)
         while (it.hasNext(itvertices)):
-            vert = it.next(itvertices)
+            vert = it.next(itvertices) #vert es cada vertice
             map.put(search['visited'],
                     vert,
                     {'marked': False, 'edgeTo': None, 'distTo': math.inf}

@@ -44,7 +44,7 @@ operación seleccionada.
 #  Variables
 # ___________________________________________________
 
-servicefile = '201801-1-citibike-tripdata.csv'
+servicefile = '201801-2-citibike-tripdata.csv'
 initialStation = None
 recursionLimit = 20000
 # ___________________________________________________
@@ -155,7 +155,17 @@ def Req5():
     trip=controller.tripsyear(cont,Opcion)
     print("La estación de entrada es: "+str(trip["EstacionE"])+" de valor "+str(trip["ValorE"]))
     print("La estación de salida es: "+str(trip["EstacionS"])+" de valor "+str(trip["ValorS"]))
-    
+    grut=controller.ruta(cont,trip["EstacionS"],trip["EstacionE"])
+    print("*******************************************************"+"\n")
+    print("Estación de inicio: "+trip["EstacionS"] )
+    if grut is None:
+        print("No hay ruta disponible")
+    else:
+        for vertex in grut:
+            print("La estación que le sigue es: "+str(vertex))
+    print("Estación de final: "+trip["EstacionE"])
+
+
 
 """
 Menu principal

@@ -116,3 +116,6 @@ def tripsyear(analyzer,numero):
 
 def rutacircular(analyzer, vertex):
     return model.hallar_ruta_circular(analyzer, vertex)
+
+def ruta(analyzer, startvertice, finalvertice):
+    return model.hallar_ruta(analyzer, startvertice, finalvertice)

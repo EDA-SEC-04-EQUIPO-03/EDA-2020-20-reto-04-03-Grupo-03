@@ -31,6 +31,7 @@ from DISClib.DataStructures import listiterator as it
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dijsktra as djk
 from DISClib.Utils import error as error
+from DISClib.ADT import stack
 from DISClib.DataStructures import mapentry as me
 assert config
 
@@ -180,16 +181,16 @@ def newViajeFecha(año):
     entry['trips'] = lt.newList('SINGLE_LINKED', compareDates)
     return entry
 
-def getTripsFecha(analyzer, opción):
+def getTripsFecha(analyzer, opcion):
     mapa=analyzer["years"]
-    estacionentrada=123
+    estacionentrada="error"
     entradabig=0
-    estacionsalida=321
+    estacionsalida="error"
     salidabig=0
-    if opción==1:
+    if opcion==1:
         i=2010
         while i<=2020:
-            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+            listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
                 single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
@@ -208,10 +209,10 @@ def getTripsFecha(analyzer, opción):
                         estacionsalida=lineaarchivo["start station id"]
             i+=1
     # retornar estructura{"EstacionE":estacionentrada,"ValorE":entradabig,"EstacionS":estacionsalida,"ValorS":salidabig}
-    elif opción==2:
-        i=2009
-        while i<=2000:
-            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+    elif opcion==2:
+        i=2000
+        while i<=2009:
+            listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
                 single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
@@ -229,10 +230,10 @@ def getTripsFecha(analyzer, opción):
                         salidabig=mayorsalida
                         estacionsalida=lineaarchivo["start station id"]
             i+=1
-    elif opción==3:
-        i=1999
-        while i<=1990:
-            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+    elif opcion==3:
+        i=1990
+        while i<=1999:
+            listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
                 single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
@@ -250,10 +251,10 @@ def getTripsFecha(analyzer, opción):
                         salidabig=mayorsalida
                         estacionsalida=lineaarchivo["start station id"]
             i+=1
-    elif opción==4:
-        i=1989
-        while i<=1980:
-            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+    elif opcion==4:
+        i=1980
+        while i<=1989:
+            listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
                 single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
@@ -271,10 +272,10 @@ def getTripsFecha(analyzer, opción):
                         salidabig=mayorsalida
                         estacionsalida=lineaarchivo["start station id"]
             i+=1
-    elif opción==5:
-        i=1979
-        while i<=1970:
-            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+    elif opcion==5:
+        i=1970
+        while i<=1979:
+            listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
                 single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
@@ -292,10 +293,10 @@ def getTripsFecha(analyzer, opción):
                         salidabig=mayorsalida
                         estacionsalida=lineaarchivo["start station id"]
             i+=1
-    elif opción==6:
-        i=1969
-        while i<=1960:
-            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+    elif opcion==6:
+        i=1960
+        while i<=1969:
+            listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
                 single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
@@ -313,10 +314,10 @@ def getTripsFecha(analyzer, opción):
                         salidabig=mayorsalida
                         estacionsalida=lineaarchivo["start station id"]
             i+=1
-    elif opción==7:
-        i=1959
-        while i<1920:
-            listadesingles=m.get(mapa,i) #año/{"info":"","trips":singlelinked}
+    elif opcion==7:
+        i=1920
+        while i<1950:
+            listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
                 single=me.getValue(listadesingles)  #//dict -> return: {"info":"","trips":singlelinked} 
@@ -379,7 +380,24 @@ def newID(ids):
     entry['viaje'] = lt.newList('SINGLE_LINKED', compareStations)
     return entry
 
-def hallar_ruta(analyzer):
+def hallar_ruta(analyzer, verteI, verteII):
+    """
+    'source': vertice inicial,
+    'visited': mapa, compare ids, //marca los visitados
+    'iminpq': cola de prioridad min pq
+    """
+    lista=[]
+    rutas = djk.Dijkstra(analyzer["connections"], verteI) #dict_keys(['source', 'visited', 'iminpq'])
+    ruta= djk.pathTo(rutas, verteII)
+    while not stack.isEmpty(ruta):
+        ultimo_pila=stack.pop(ruta)
+        lista.append(ultimo_pila)
+    #if lista is not None:
+    #    print("Lista llena")
+    #    print(len(lista))
+    if lista is not None and len(lista)>1:
+        lista=lista.reverse()
+    return lista
     
 
 # ==============================
