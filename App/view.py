@@ -44,7 +44,7 @@ operación seleccionada.
 #  Variables
 # ___________________________________________________
 
-servicefile = '201801-2-citibike-tripdata.csv'
+servicefile = '201801-3-citibike-tripdata.csv'
 initialStation = None
 recursionLimit = 20000
 # ___________________________________________________
@@ -67,6 +67,7 @@ def printMenu():
     print("5- Requerimiento #3 ")
 
     print("7- Requerimiento #5 ")
+    print("8- Requerimiento #6 ")
     print("0- Salir")
     print("*******************************************")
 
@@ -155,17 +156,42 @@ def Req5():
     trip=controller.tripsyear(cont,Opcion)
     print("La estación de entrada es: "+str(trip["EstacionE"])+" de valor "+str(trip["ValorE"]))
     print("La estación de salida es: "+str(trip["EstacionS"])+" de valor "+str(trip["ValorS"]))
-    grut=controller.ruta(cont,trip["EstacionS"],trip["EstacionE"])
-    print("*******************************************************"+"\n")
-    print("Estación de inicio: "+trip["EstacionS"] )
-    if grut is None:
-        print("No hay ruta disponible")
+    if trip["EstacionE"] not in "ninguna" and trip["EstacionS"] not in "ninguna":
+        grut=controller.ruta(cont,trip["EstacionS"],trip["EstacionE"])
+        print("*******************************************************"+"\n")
+        print("Estación de inicio: "+trip["EstacionS"] )
+        if grut is None:
+            print("No hay ruta disponible")
+        else:
+            for vertex in grut:
+                print("La estación que le sigue es: "+str(vertex["vertexA"])+"-"+str(vertex["vertexB"]))
+        print("Estación de final: "+trip["EstacionE"])
     else:
-        for vertex in grut:
-            print("La estación que le sigue es: "+str(vertex))
-    print("Estación de final: "+trip["EstacionE"])
+        print("No hay estaciones en el registro en ese rango de edad, por tanto, no hay ruta calculable")
 
+def Req6():
+    print("")
+    LongActual=input("Ingrese el valor de la longitud de su ubicación actual: ")
+    LatActual=input("Ingrese el valor de la latitud de su ubicación actual: ")
+    LongFinal=input("Ingrese el valor de la longitud de la ubicación a la que quiere llegar: ")
+    LatFinal=input("Ingrese el valor de la latitud de la ubicación a la que quiere llegar: ")
 
+    nodoInicial=controller.hallar_nodoI(cont,LatActual, LongActual ) #sale
+    nodoFinal=controller.hallar_nodoF(cont, LatFinal, LongFinal) #llega
+    print("Calculando ruta de: "+nodoInicial+" hasta "+nodoFinal)
+    print("Ruta a tomar: ")
+    camino=controller.ruta(cont,nodoInicial, nodoFinal)
+    if camino is None or (len(camino)==0):
+        print("No hay ruta1 disponible")
+    else:
+        for vertex in camino:
+            print("1-La estación que le sigue es: "+str(vertex["vertexA"])+"-"+str(vertex["vertexB"]))
+    camino2=controller.ruta(cont,nodoFinal, nodoInicial)
+    if camino2 is None or (len(camino2)==0):
+        print("No hay ruta2 disponible")
+    else:
+        for vertex in camino2:
+            print("2-La estación que le sigue es: "+str(vertex["vertexA"])+"-"+str(vertex["vertexB"]))
 
 """
 Menu principal
@@ -196,6 +222,9 @@ while True:
         print("Tiempo de ejecución: " + str(executiontime))
     elif int(inputs[0]) == 7:
         executiontime = timeit.timeit(Req5, number=1)
+        print("Tiempo de ejecución: " + str(executiontime))
+    elif int(inputs[0]) == 8:
+        executiontime = timeit.timeit(Req6, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
     else:
         sys.exit(0)

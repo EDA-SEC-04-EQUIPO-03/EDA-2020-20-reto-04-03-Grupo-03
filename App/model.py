@@ -33,6 +33,7 @@ from DISClib.Algorithms.Graphs import dijsktra as djk
 from DISClib.Utils import error as error
 from DISClib.ADT import stack
 from DISClib.DataStructures import mapentry as me
+from math import radians, cos, sin, asin, sqrt
 assert config
 
 """
@@ -66,6 +67,10 @@ def Analizador():
         analyzer['years'] = m.newMap(numelements=14000,
                                      maptype='CHAINING',
                                      comparefunction=compareDates)
+        analyzer["bikeid"]=  m.newMap(numelements=14000,
+                                     maptype='CHAINING',
+                                     comparefunction=compareBikeid)
+        
         
         return analyzer
  except Exception as exp:
@@ -183,13 +188,13 @@ def newViajeFecha(año):
 
 def getTripsFecha(analyzer, opcion):
     mapa=analyzer["years"]
-    estacionentrada="error"
+    estacionentrada="ninguna"
     entradabig=0
-    estacionsalida="error"
+    estacionsalida="ninguna"
     salidabig=0
     if opcion==1:
         i=2010
-        while i<=2020:
+        while i<=2020 and m.contains(mapa,str(i)):
             listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
@@ -211,7 +216,7 @@ def getTripsFecha(analyzer, opcion):
     # retornar estructura{"EstacionE":estacionentrada,"ValorE":entradabig,"EstacionS":estacionsalida,"ValorS":salidabig}
     elif opcion==2:
         i=2000
-        while i<=2009:
+        while i<=2009 and m.contains(mapa,str(i)):
             listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
@@ -232,7 +237,7 @@ def getTripsFecha(analyzer, opcion):
             i+=1
     elif opcion==3:
         i=1990
-        while i<=1999:
+        while i<=1999 and m.contains(mapa,str(i)):
             listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
@@ -253,7 +258,7 @@ def getTripsFecha(analyzer, opcion):
             i+=1
     elif opcion==4:
         i=1980
-        while i<=1989:
+        while i<=1989 and m.contains(mapa,str(i)):
             listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
@@ -274,7 +279,7 @@ def getTripsFecha(analyzer, opcion):
             i+=1
     elif opcion==5:
         i=1970
-        while i<=1979:
+        while i<=1979 and m.contains(mapa,str(i)):
             listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
@@ -295,7 +300,7 @@ def getTripsFecha(analyzer, opcion):
             i+=1
     elif opcion==6:
         i=1960
-        while i<=1969:
+        while i<=1969 and m.contains(mapa,str(i)):
             listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
@@ -316,7 +321,7 @@ def getTripsFecha(analyzer, opcion):
             i+=1
     elif opcion==7:
         i=1920
-        while i<1950:
+        while i<1950 and m.contains(mapa,str(i)):
             listadesingles=m.get(mapa,str(i)) #año/{"info":"","trips":singlelinked}
             #a=m.get(mapa,i)["value"] #{"info":"","trips":singlelinked}
             if listadesingles is not None:
@@ -347,8 +352,34 @@ def hallar_ruta_circular(analyzer,vertice):
     while it.hasNext(iterator):
         arco=it.next(iterator) #dict_keys(['vertexA', 'vertexB', 'weight'])
         if arco["vertexA"]==vertice and sameCC(analyzer,vertice,arco["vertexB"]):
-            pesot = pesot+arco["weight"]
+            pesot = pesot+int(arco["weight"])+20
             vertice = arco["vertexB"]
+            ###
+            listadesingles=m.get(analyzer["trips"],arco["vertexA"]) #id/{"id":"","viaje":singlelinked} 
+            single=me.getValue(listadesingles)  #//dict -> return: {"id":"","viaje":singlelinked} 
+            iterator=it.newIterator(single["viaje"]) 
+            while it.hasNext(iterator):
+                lineaarchivo = it.next(iterator) #//tengo lista con "start id" igual y "end id" distinto
+                if lineaarchivo["end station id"]==arco["vertexB"]:
+                    lista.append(lineaarchivo["start station name"])
+                    lista.append(lineaarchivo["end station name"])
+            ###
+        if sameCC(analyzer, arco["vertexA"], vertice):
+            pesot = pesot+int(arco["weight"])+20
+            vertice = arco["vertexB"]
+            ###
+            listadesingles=m.get(analyzer["trips"],arco["vertexA"]) #id/{"id":"","viaje":singlelinked} 
+            single=me.getValue(listadesingles)  #//dict -> return: {"id":"","viaje":singlelinked} 
+            iterator=it.newIterator(single["viaje"]) 
+            while it.hasNext(iterator):
+                lineaarchivo = it.next(iterator) #//tengo lista con "start id" igual y "end id" distinto
+                if lineaarchivo["end station id"]==arco["vertexB"]:
+                    lista.append(lineaarchivo["start station name"])
+                    lista.append(lineaarchivo["end station name"])
+            ###
+        elif sameCC(analyzer, arco["vertexB"], vertice):
+            pesot = pesot+int(arco["weight"])+20
+            vertice = arco["vertexA"]
             ###
             listadesingles=m.get(analyzer["trips"],arco["vertexA"]) #id/{"id":"","viaje":singlelinked} 
             single=me.getValue(listadesingles)  #//dict -> return: {"id":"","viaje":singlelinked} 
@@ -388,10 +419,11 @@ def hallar_ruta(analyzer, verteI, verteII):
     """
     lista=[]
     rutas = djk.Dijkstra(analyzer["connections"], verteI) #dict_keys(['source', 'visited', 'iminpq'])
-    ruta= djk.pathTo(rutas, verteII)
-    while not stack.isEmpty(ruta):
-        ultimo_pila=stack.pop(ruta)
-        lista.append(ultimo_pila)
+    if djk.hasPathTo(rutas,verteII):
+        ruta= djk.pathTo(rutas, verteII) #stack
+        while not stack.isEmpty(ruta):
+            ultimo_pila=stack.pop(ruta)
+            lista.append(ultimo_pila)
     #if lista is not None:
     #    print("Lista llena")
     #    print(len(lista))
@@ -399,6 +431,96 @@ def hallar_ruta(analyzer, verteI, verteII):
         lista=lista.reverse()
     return lista
     
+def calcularNodoI(analyzer,latitud1, longitud1):
+    """
+    Hallar estación más cercana del cual sale 
+    """
+    nodo="no hay"
+    menor=9999
+    singlekeys=m.keySet(analyzer["bikeid"]) #lista con start id  //no se repite id
+    estructura=analyzer["bikeid"] #analizar nodos de llegada //orden por start id
+    iterator=it.newIterator(singlekeys)
+    while it.hasNext(iterator):
+        valor=it.next(iterator) #valor es cada id
+        listadesingles=m.get(estructura,valor) #start station id/{'id': "", "viaje": singlelinked}
+        if listadesingles is not None:
+            single=me.getValue(listadesingles)  #//dict -> return: {'id': "start id", "viaje": singlelinked}
+            iterator=it.newIterator(single["bike"])
+            while it.hasNext(iterator):
+                lineaarchivo = it.next(iterator) #datos de archivo
+                distancia=distance(float(latitud1),float(lineaarchivo["end station latitude"]),float(longitud1),float(lineaarchivo["end station longitude"]))
+                if float(distancia)<menor:
+                    menor=distancia
+                    nodo=lineaarchivo["end station id"]
+    return nodo
+
+
+def calcularNodoF(analyzer,latitud1, longitud1):
+    """
+    Hallar estación más cercana al cual llega 
+    """
+    nodo="no hay"
+    menor=9999
+    singlekeys=m.keySet(analyzer["trips"]) #lista con start id  //no se repite id
+    estructura=analyzer["trips"] #analizar nodos de llegada //orden por start id
+    iterator=it.newIterator(singlekeys)
+    while it.hasNext(iterator):
+        valor=it.next(iterator) #valor es cada id
+        listadesingles=m.get(estructura,valor) #start station id/{'id': "", "viaje": singlelinked}
+        if listadesingles is not None:
+            single=me.getValue(listadesingles)  #//dict -> return: {'id': "start id", "viaje": singlelinked}
+            iterator=it.newIterator(single["viaje"])
+            while it.hasNext(iterator):
+                lineaarchivo = it.next(iterator) #datos de archivo
+                distancia=distance(float(latitud1),float(lineaarchivo["start station latitude"]),float(longitud1),float(lineaarchivo["start station longitude"]))
+                if float(distancia)<menor:
+                    menor=distancia
+                    nodo=lineaarchivo["start station id"]
+    return nodo
+
+def AddViajePorUID(analyzer, ids,trip):  #trip:linea de archivo, fecha:año de cada archivo
+    mapa=analyzer["bikeid"]
+    hayviaje= m.contains(mapa, ids)
+    if hayviaje:
+        entrada=m.get(mapa, ids) #//dict: llave/valor = id/{"id":"","viaje":singlelinked}
+        struk=me.getValue(entrada)  #//dict -> return: {"id":"id","viaje":singlelinked} 
+    else:
+        struk=newUID(ids) #crear
+        m.put(mapa, ids, struk) #args: Map, key value //72:{"info":"","trips":singlelinked}
+    lt.addLast(struk["bike"], trip) #{"id":"id","viaje":singlelinked}   añadir en viajes linea archivo
+
+def newUID(ids):
+    entry = {'id': "", "bike": None}
+    entry['id'] = ids
+    entry['bike'] = lt.newList('SINGLE_LINKED', compareStations)
+    return entry
+
+
+
+
+def distance(lat1, lat2, lon1, lon2): 
+    
+    # pasar a radianes
+    lon1 = radians(lon1) 
+    lon2 = radians(lon2) 
+    lat1 = radians(lat1) 
+    lat2 = radians(lat2) 
+    #diferencia
+    dlon = lon2 - lon1  
+    dlat = lat2 - lat1 
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+  
+    c = 2 * asin(sqrt(a))  
+     
+    # Radio tierra en km. Usar 3956 si son millas miles 
+    r = 6371
+       
+    # calculate the result 
+    return(c * r) 
+
+
+
+
 
 # ==============================
 # Funciones de consulta

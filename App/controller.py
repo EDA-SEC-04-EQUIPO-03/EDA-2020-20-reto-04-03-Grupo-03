@@ -69,8 +69,10 @@ def loadData(analyzer, archivo):
         model.AddViaje(analyzer, trip)
         fecha=trip["birth year"]
         ID=trip["start station id"]
+        UID=trip["end station id"]
         model.AddViajePorhora(analyzer,fecha ,trip)
         model.AddViajePorID(analyzer, ID, trip)
+        model.AddViajePorUID(analyzer, ID, trip)
     return analyzer
 
 
@@ -119,3 +121,15 @@ def rutacircular(analyzer, vertex):
 
 def ruta(analyzer, startvertice, finalvertice):
     return model.hallar_ruta(analyzer, startvertice, finalvertice)
+
+def hallar_nodoI(analyzer, La1, Lo1):
+    """
+    hallar ID según latitud - longitud 
+    """
+    return model.calcularNodoI(analyzer, La1, Lo1)
+
+def hallar_nodoF(analyzer, La1, Lo1):
+    """
+    hallar ID según latitud - longitud 
+    """
+    return model.calcularNodoF(analyzer, La1, Lo1)
